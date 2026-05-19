@@ -62,3 +62,62 @@ const phanTu = users.find((user) =>
 )
 console.log(phanTu);
 
+const testRun = [
+  [
+    "  login smoke  ",
+    {browser: " Chromium ", env: "  staging  "},
+    "  PASS  "
+  ],
+   [
+    "  checkout payment  ",
+    {browser: " Firefox ", env: "  test  "},
+    "  PASS  "
+  ],
+   [
+    "  search product  ",
+    {browser: " Webkit ", env: "  product  "},
+    "  FAIL  "
+  ],
+     [
+    "  ",
+    {browser: " Webkit ", env: "  product  "},
+    "  FAIL  "
+  ],
+];
+function taoBaoCaoTest(testRun){
+  let invalid = 0;
+  const passed =[];
+  const failed = [];
+  for(let item of testRun){
+    const [rawTestname, {browser, env}, rawResult] = item;
+  
+  const testName = rawTestname.trim();
+  const browserName = browser.trim();
+  const realEnv = env.trim().toUpperCase();
+  const result = rawResult.trim();
+
+  if(testName === ""){
+    invalid++;
+    continue;
+  }
+  if(result !== "PASS" && result !== "FAIL"){
+    invalid++;
+    continue;
+  }
+  const reportItem = `${testName} - ${browserName} - ${realEnv}`
+  if(result === "PASS"){
+    passed.push(reportItem);
+  }else{
+    failed.push(reportItem);
+  }
+ }
+ return{
+    totalValid: passed.length + failed.length,
+    totalInvalid: invalid,
+    passed: passed,
+    failed: failed
+  }
+}
+console.log(taoBaoCaoTest(testRun));
+
+
